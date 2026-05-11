@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<launch>
+  <description>Launch all 9 ROS2 nodes for Traje Ironman AI system</description>
+
+  <!-- Sensor Fusion Node (100 Hz) -->
+  <node pkg="traje_ironman_ai" exec="sensor_fusion" name="sensor_fusion_node" output="screen">
+    <param name="fusion_rate" value="100"/>
+    <param name="ekf_process_noise" value="0.001"/>
+    <param name="ekf_measurement_noise" value="0.1"/>
+  </node>
+
+  <!-- Flight Controller Node (100 Hz) -->
+  <node pkg="traje_ironman_ai" exec="flight_controller" name="flight_controller_node" output="screen">
+    <param name="control_rate" value="100"/>
+    <param name="max_tilt_angle_deg" value="45"/>
+    <param name="max_vertical_velocity_ms" value="2.0"/>
+  </node>
+
+  <!-- Motor Manager Node (1000 Hz) -->
+  <node pkg="traje_ironman_ai" exec="motor_manager" name="motor_manager_node" output="screen">
+    <param name="motor_control_rate" value="1000"/>
+    <param name="num_edfs" value="8"/>
+    <param name="num_rcs" value="16"/>
+    <param name="motor_max_temp_c" value="85.0"/>
+    <param name="motor_max_amp" value="80.0"/>
+  </node>
+
+  <!-- Obstacle Detection Node (30 Hz) -->
+  <node pkg="traje_ironman_ai" exec="obstacle_detection" name="obstacle_detection_node" output="screen">
+    <param name="detection_rate" value="30"/>
+    <param name="yolo_confidence_threshold" value="0.5"/>
+    <param name="yolo_iou_threshold" value="0.45"/>
+    <param name="threat_distance_m" value="10.0"/>
+    <param name="max_detection_range_m" value="50.0"/>
+  </node>
+
+  <!-- Route Planner Node (10 Hz) -->
+  <node pkg="traje_ironman_ai" exec="route_planner" name="route_planner_node" output="screen">
+    <param name="planning_rate" value="10"/>
+    <param name="grid_resolution_m" value="10.0"/>
+    <param name="max_altitude_m" value="500.0"/>
+    <param name="min_altitude_m" value="50.0"/>
+    <param name="replan_distance_threshold_m" value="20.0"/>
+    <param name="planning_mode" value="safe"/>
+  </node>
+
+  <!-- Pilot Learning Node (1 Hz) -->
+  <node pkg="traje_ironman_ai" exec="pilot_learning" name="pilot_learning_node" output="screen">
+    <param name="learning_rate" value="1"/>
+    <param name="lstm_hidden_size" value="64"/>
+    <param name="lstm_sequence_length" value="10"/>
+    <param name="flight_history_size" value="50"/>
+  </node>
+
+  <!-- Energy Manager Node (5 Hz) -->
+  <node pkg="traje_ironman_ai" exec="energy_manager" name="energy_manager_node" output="screen">
+    <param name="energy_update_rate" value="5"/>
+    <param name="battery_capacity_kwh" value="20.0"/>
+    <param name="battery_warning_level" value="0.30"/>
+    <param name="battery_critical_level" value="0.20"/>
+    <param name="battery_emergency_level" value="0.15"/>
+    <param name="fuel_cell_max_power_kw" value="3.0"/>
+  </node>
+
+  <!-- Emergency Node (10 Hz) -->
+  <node pkg="traje_ironman_ai" exec="emergency" name="emergency_node" output="screen">
+    <param name="monitoring_rate" value="10"/>
+    <param name="unconscious_threshold" value="30"/>
+    <param name="descent_rate_ms" value="0.5"/>
+    <param name="emergency_contact" value="+1-234-567-8900"/>
+  </node>
+
+  <!-- HUD Manager Node (30 Hz) -->
+  <node pkg="traje_ironman_ai" exec="hud_manager" name="hud_manager_node" output="screen">
+    <param name="hud_update_rate" value="30"/>
+    <param name="hud_brightness" value="0.8"/>
+    <param name="hud_contrast" value="0.7"/>
+    <param name="ar_overlay_enabled" value="true"/>
+  </node>
+
+</launch>
